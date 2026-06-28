@@ -13,7 +13,6 @@
             --border-light: #222;
             --muted-color: #888;
             --shadow-color: #000;
-            --overlay-bg: rgba(0,0,0,0.85);
         }
 
         /* Light Theme Overrides */
@@ -24,13 +23,14 @@
             --border-light: #ccc;
             --muted-color: #555;
             --shadow-color: #fff;
-            --overlay-bg: rgba(255,255,255,0.85);
         }
 
         /* Reset & Base */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
-        html { scroll-behavior: smooth; }
+        html {
+            scroll-behavior: auto; 
+        }
         
         body {
             background-color: var(--bg-color);
@@ -201,71 +201,124 @@
             opacity: 1;
         }
 
-        /* --- MODAL / POPUP STYLES --- */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--overlay-bg);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10;
-            visibility: hidden;
-            opacity: 0;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-            backdrop-filter: blur(2px);
+        /* --- VIEW TOGGLES (BULLETPROOF SLIDE) --- */
+        #main-portfolio {
+            display: block;
+            transform: translateY(0);
+            transition: none;
         }
-        .modal-overlay.open {
-            visibility: visible;
-            opacity: 1;
+        #main-portfolio.hidden {
+            transform: translateY(100vh);
+            height: 0;
+            overflow: hidden;
+            pointer-events: none;
         }
-        .modal-box {
-            background: var(--bg-color);
-            border: 1px solid var(--border-color);
-            padding: 25px;
-            max-width: 85%;
-            max-height: 80%;
-            overflow-y: auto;
-            position: relative;
-            text-align: left;
-            transform: scale(0.95);
-            transition: transform 0.3s ease;
-        }
-        .modal-overlay.open .modal-box {
-            transform: scale(1);
-        }
-        .modal-close {
-            position: absolute;
-            top: 10px; right: 15px;
-            font-size: 20px;
+
+        #app-info-view { display: none; }
+        #app-info-view.open { display: block; }
+
+        .app-back-btn {
+            color: var(--muted-color);
+            font-size: 12px;
             cursor: pointer;
+            display: inline-block;
+            margin-bottom: 25px;
+        }
+        .app-back-btn:active { color: var(--text-color); }
+
+        .app-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(145deg, #333, #111);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+        .app-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+        }
+        .app-title {
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+        .app-sub {
+            font-size: 13px;
+            color: var(--muted-color);
+            margin-bottom: 25px;
+        }
+
+        .app-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px 20px;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 20px 0;
+            margin-bottom: 25px;
+        }
+        .app-info-item span { display: block; }
+        .app-info-label { font-size: 10px; color: var(--muted-color); }
+        .app-info-value { font-size: 13px; margin-top: 3px; }
+
+        .app-desc {
+            text-transform: none;
+            font-size: 14px;
+            line-height: 1.7;
             color: var(--text-color);
+            margin-bottom: 15px;
+        }
+        .app-how {
+            text-transform: none;
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--text-color);
+            margin-bottom: 25px;
+            padding: 15px;
+            background: var(--shadow-color);
+            border: 1px solid var(--border-color);
+        }
+        .app-how-label {
+            font-size: 11px;
+            font-weight: bold;
+            color: var(--muted-color);
+            display: block;
+            margin-bottom: 6px;
+        }
+        .app-tech {
+            font-size: 12px;
+            color: var(--muted-color);
+            border-left: 2px solid var(--border-color);
+            padding-left: 12px;
+            margin-bottom: 30px;
+        }
+
+        .app-download-btn {
+            display: block;
+            width: 100%;
+            background: var(--text-color);
+            color: var(--bg-color);
+            text-align: center;
+            padding: 15px;
+            font-weight: bold;
+            font-family: inherit;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            letter-spacing: 1px;
             transition: opacity 0.2s;
         }
-        .modal-close:active { opacity: 0.5; }
-        .modal-title {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            padding-right: 20px;
-            border-bottom: 1px solid var(--border-light);
-            padding-bottom: 10px;
-        }
-        .modal-desc {
-            font-size: 13px;
-            line-height: 1.6;
-            margin-bottom: 15px;
-            text-transform: none; /* Allow proper sentences */
-        }
-        .modal-link {
-            display: inline-block;
-            margin-top: 5px;
-            color: var(--text-color);
-            text-decoration: underline;
-            text-underline-offset: 3px;
-            font-size: 12px;
-        }
-        .modal-link:active { opacity: 0.5; }
+        .app-download-btn:active { opacity: 0.5; }
     </style>
 </head>
 <body>
@@ -273,204 +326,283 @@
     <!-- TOOLTIP FOR COPY -->
     <div id="copy-tooltip">COPIED!</div>
 
-    <!-- MODAL POPUP CONTAINER -->
-    <div class="modal-overlay" id="projectModal" onclick="closeModalOutside(event)">
-        <div class="modal-box">
-            <span class="modal-close" onclick="closeModal()">✕</span>
-            <div class="modal-title" id="modalTitle">PROJECT TITLE</div>
-            <div class="modal-desc" id="modalDesc">Project description goes here.</div>
-            <div id="modalLinks"></div>
-        </div>
+    <!-- ========================================== -->
+    <!--            MAIN PORTFOLIO VIEW              -->
+    <!-- ========================================== -->
+    <div id="main-portfolio">
+        <!-- HEADER -->
+        <header class="flex justify-between items-start mb-1">
+            <h1 class="pixel-title"><span>TA2</span></h1>
+            <div class="text-right text-sm" style="margin-top: 5px; line-height: 1.4;">
+                <div>/ WEB DEVELOPMENT</div>
+                <div>& GAME DESIGN</div>
+                <div>& CREATIVE WRITING</div>
+                <br>
+                <div>/ SELF-TAUGHT</div>
+                <div>ALWAYS BUILDING</div>
+            </div>
+        </header>
+
+        <!-- TOP NAVIGATION -->
+        <nav class="nav-bar">
+            <div class="nav-item text-muted">
+                <span class="nav-icon-box"><span style="position:absolute;">⌂</span></span> HOME
+            </div>
+            <a href="#projects" class="nav-item nav-link">
+                <span class="nav-icon-box"><span style="position:absolute;">◫</span></span> PROJECTS
+            </a>
+            <a href="#contact" class="nav-item nav-link">
+                <span class="nav-icon-box"><span style="position:absolute;">◑</span></span> CONTACT
+            </a>
+            <div class="nav-item nav-link" onclick="toggleTheme()">
+                <span class="nav-icon-box">
+                    <svg id="theme-icon" class="theme-icon-svg" viewBox="0 0 24 24">
+                        <path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+                    </svg>
+                </span> THEME
+            </div>
+        </nav>
+
+        <!-- BIOGRAPHY -->
+        <section class="mb-3">
+            <h2 class="section-header">WHO I AM</h2>
+            <div class="block-text">
+                I build web apps, prototype game concepts, and write fiction. I don't do "AI-generated" resumes. I do things that work, worlds that feel real, and code that's intentional.
+            </div>
+            <div class="block-text text-muted">
+                I'm not a senior developer. I'm not pretending to be. I'm a beginner who actually builds things—bookshelves, games, libraries, stories, and design docs. That puts me ahead of most people stuck on tutorials.
+            </div>
+        </section>
+
+        <!-- PROJECTS -->
+        <section id="projects" class="mb-3">
+            <h2 class="section-header">WHAT I BUILD</h2>
+            
+            <!-- BOOKSHELF (APK) -->
+            <div class="project-row">
+                <div class="project-clickable" onclick="openAppInfo(
+                    'BOOKSHELF', 
+                    'An offline PWA library manager that lets you store books, track reading status, and view them organized on a 3D wooden shelf interface.', 
+                    'bookshelf.png', 
+                    'PWA · JavaScript · CSS', 
+                    'UNIVERSAL (32-BIT / 64-BIT)', 
+                    'ANDROID 5.0+', 
+                    '4.5 MB', 
+                    'sngpb19mkg508ml', 
+                    'The user opens the app and sees a 3D wooden shelf. By tapping the ADD BOOK button, a form appears. The user enters the title and author, selects a cover color or uploads a custom cover image, and picks a status (Reading, Not Started, Complete). The book appears on the shelf instantly. Swiping left or right reveals more shelves. Tapping My Books displays all entries in a searchable list format.'
+                )">
+                    <div class="project-title">▮ BOOKSHELF</div>
+                    <div class="text-xs text-muted project-meta">WEB APP</div>
+                </div>
+                <div class="text-xs text-muted">An offline PWA library manager. Store books, track reading status, and view them on a 3D wooden shelf.</div>
+            </div>
+
+            <!-- PRIMARY (APK) -->
+            <div class="project-row">
+                <div class="project-clickable" onclick="openAppInfo(
+                    'PRIMARY', 
+                    'A color memory game where you must memorize a target color and accurately recreate it using RGB sliders. Your score is calculated based on how precise your color matching is.', 
+                    'primary.png', 
+                    'HTML · CSS · JavaScript', 
+                    'UNIVERSAL (32-BIT / 64-BIT)', 
+                    'ANDROID 5.0+', 
+                    '3.2 MB', 
+                    'q36xnwrc36zjbwn', 
+                    'The user is presented with a target color on the screen. After memorizing it, the user must move three RGB sliders (Red, Green, Blue) to recreate the exact shade. Once the user confirms their attempt, the app compares the selected color to the target color and assigns a score based on the accuracy of the match.'
+                )">
+                    <div class="project-title">▮ PRIMARY</div>
+                    <div class="text-xs text-muted project-meta">WEB APP</div>
+                </div>
+                <div class="text-xs text-muted">A color memory game. Memorize a color, recreate it using RGB sliders, and score based on accuracy.</div>
+            </div>
+
+            <!-- STUMBLE (Web App) -->
+            <div class="project-row">
+                <div class="project-clickable" onclick="openAppInfo(
+                    'STUMBLE', 
+                    'A web randomizer tool that sends you to hidden, weird, and interesting corners of the internet with a single tap.', 
+                    'stumble.png', 
+                    'HTML · CSS · JavaScript', 
+                    'BROWSER', 
+                    'N/A', 
+                    'N/A', 
+                    'https://stumble-io.netlify.app', 
+                    'The user taps the STUMBLE button on the screen. The app queries a curated list of obscure and interesting websites, then redirects the user to a random destination. Each tap sends you to a new hidden corner of the internet, providing endless discovery without any repeated destinations.'
+                )">
+                    <div class="project-title">▮ STUMBLE</div>
+                    <div class="text-xs text-muted project-meta">WEB APP</div>
+                </div>
+                <div class="text-xs text-muted">A web randomizer that sends you to hidden, weird, and interesting corners of the internet.</div>
+            </div>
+
+            <!-- THE LOOP (GDD) -->
+            <div class="project-row">
+                <div class="project-clickable" onclick="openAppInfo(
+                    'THE LOOP', 
+                    'A narrative-driven 3D platformer about breaking free from conformity and facing the consequences of freedom.', 
+                    null, 
+                    null, 
+                    null, 
+                    null, 
+                    null, 
+                    'https://drive.google.com/file/d/1NRxaWkRofYcpiQIXNQx3rSz6AwUielph/view', 
+                    'The player controls a child who breaks free from an oppressive school system to explore a vibrant forest. Through rhythm-based petting, healing injured animals, and solving environmental puzzles, the player bonds with wildlife. The game builds toward an emotional chase sequence and a thought-provoking ending about free will and consequence.'
+                )">
+                    <div class="project-title">▮ THE LOOP</div>
+                    <div class="text-xs text-muted project-meta">GDD</div>
+                </div>
+                <div class="text-xs text-muted">A narrative-driven 3D platformer about breaking free from conformity and facing the consequences of freedom.</div>
+            </div>
+
+            <!-- CONCRETE SHIFT (GDD) -->
+            <div class="project-row">
+                <div class="project-clickable" onclick="openAppInfo(
+                    'CONCRETE SHIFT', 
+                    'A first-person rhythm survival game about a construction worker trapped in a concrete pipe filling with wet cement.', 
+                    null, 
+                    null, 
+                    null, 
+                    null, 
+                    null, 
+                    'https://drive.google.com/file/d/1no5a8Jb-T1rSOrofxKcoJ6NNpbEFIId6/view', 
+                    'The player controls a construction worker who falls into a vertical pipe of wet cement. They must carefully manage their movements to avoid sinking deeper or letting the cement harden. Using visual rhythm cues, the player attempts to climb out, reach a phone, or survive until morning while managing the risk of permanent entrapment.'
+                )">
+                    <div class="project-title">▮ CONCRETE SHIFT</div>
+                    <div class="text-xs text-muted project-meta">GDD</div>
+                </div>
+                <div class="text-xs text-muted">A first-person rhythm survival game about a construction worker trapped in a concrete pipe filling with wet cement.</div>
+            </div>
+
+            <!-- ESCAPE THE SALE (GDD) -->
+            <div class="project-row">
+                <div class="project-clickable" onclick="openAppInfo(
+                    'ESCAPE THE SALE', 
+                    'A first-person maze runner where a husband must escape a furniture store before his wife\'s shopping bill becomes overwhelming.', 
+                    null, 
+                    null, 
+                    null, 
+                    null, 
+                    null, 
+                    'https://drive.google.com/file/d/1hEBGfhJZft8erwAdDGGZtxo3Qs2-uIFa/view', 
+                    'The player controls a husband trapped in a massive furniture store during a sale. They must navigate a procedurally generated maze of showrooms and aisles, dodging NPCs and the wife\'s friends, all while keeping the total shopping bill as low as possible. Find the exit before getting caught and forced to checkout.'
+                )">
+                    <div class="project-title">▮ ESCAPE THE SALE</div>
+                    <div class="text-xs text-muted project-meta">GDD</div>
+                </div>
+                <div class="text-xs text-muted">A first-person maze runner where a husband must escape a furniture store before his wife's shopping bill becomes overwhelming.</div>
+            </div>
+
+            <!-- ANIMAL RIDER (GDD) -->
+            <div class="project-row">
+                <div class="project-clickable" onclick="openAppInfo(
+                    'ANIMAL RIDER', 
+                    'An arcade racing game about high-speed riding on animals. Drifting builds energy to unlock a temporary overpower state.', 
+                    null, 
+                    null, 
+                    null, 
+                    null, 
+                    null, 
+                    'https://drive.google.com/file/d/1oV1CDefZn5pXu8UtplgRDatCfoCBvcKj/view', 
+                    'The player rides animals at high speeds through traffic-filled roads and mountain paths. By drifting around corners and taking risks, the player builds up an energy meter. When full, they can activate Super Sonic Mode to destroy obstacles and reach extreme speeds. The game is an endless runner where control and risk management are key.'
+                )">
+                    <div class="project-title">▮ ANIMAL RIDER</div>
+                    <div class="text-xs text-muted project-meta">GDD</div>
+                </div>
+                <div class="text-xs text-muted">An arcade racing game about high-speed riding on animals. Drifting builds energy to unlock a temporary overpower state.</div>
+            </div>
+
+            <!-- LUDO ROGUELIKE (GDD) -->
+            <div class="project-row" style="border-bottom: none;">
+                <div class="project-clickable" onclick="openAppInfo(
+                    'LUDO ROGUELIKE', 
+                    'A classic Ludo board game fused with a card system that breaks the rules every turn.', 
+                    null, 
+                    null, 
+                    null, 
+                    null, 
+                    null, 
+                    'https://drive.google.com/file/d/18PtNKbq7WeXcZjU2oLqRSorN8yKN41hG/view', 
+                    'This is classic Ludo combined with a card system. At the start of each turn, the player rolls the dice, draws a card, and chooses whether to play it. Cards like Shotgun, Shield, and Win Steak completely change the flow of the game. It supports 2-4 players in hot-seat mode or against AI, making every match feel fresh and unpredictable.'
+                )">
+                    <div class="project-title">▮ LUDO ROGUELIKE</div>
+                    <div class="text-xs text-muted project-meta">GDD</div>
+                </div>
+                <div class="text-xs text-muted">A classic Ludo board game fused with a card system that breaks the rules every turn.</div>
+            </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section id="contact" class="mb-2">
+            <h2 class="section-header">CONTACT</h2>
+            <div class="flex flex-col gap-1 text-sm">
+                <div class="flex justify-between" onclick="copyEmail()">
+                    <span>EMAIL</span>
+                    <span class="text-muted" style="cursor: pointer;">TrineryA2@gmail.com</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>GITHUB</span>
+                    <a href="https://github.com/TrineryA2" target="_blank" class="text-muted" style="cursor: pointer;">github.com/TrineryA2</a>
+                </div>
+                <div class="flex justify-between">
+                    <span>ITCH.IO</span>
+                    <a href="https://trinerya2.itch.io" target="_blank" class="text-muted" style="cursor: pointer;">trinerya2.itch.io</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="footer-grid">
+            <div>TA2<br><span class="text-xs">© 2026</span></div>
+            <div class="text-right text-xs">TrineryA2@gmail.com</div>
+            <div class="text-xs">github.com/TrineryA2</div>
+            <div class="text-right text-xs">trinerya2.itch.io</div>
+        </footer>
     </div>
 
-    <!-- HEADER -->
-    <header class="flex justify-between items-start mb-1">
-        <h1 class="pixel-title"><span>TA2</span></h1>
-        <div class="text-right text-sm" style="margin-top: 5px; line-height: 1.4;">
-            <div>/ WEB DEVELOPMENT</div>
-            <div>& GAME DESIGN</div>
-            <div>& CREATIVE WRITING</div>
-            <br>
-            <div>/ SELF-TAUGHT</div>
-            <div>ALWAYS BUILDING</div>
-        </div>
-    </header>
-
-    <!-- TOP NAVIGATION -->
-    <nav class="nav-bar">
-        <div class="nav-item text-muted">
-            <span class="nav-icon-box"><span style="position:absolute;">⌂</span></span> HOME
-        </div>
-        <a href="#projects" class="nav-item nav-link">
-            <span class="nav-icon-box"><span style="position:absolute;">◫</span></span> PROJECTS
-        </a>
-        <a href="#contact" class="nav-item nav-link">
-            <span class="nav-icon-box"><span style="position:absolute;">◑</span></span> CONTACT
-        </a>
-        <div class="nav-item nav-link" onclick="toggleTheme()">
-            <span class="nav-icon-box">
-                <svg id="theme-icon" class="theme-icon-svg" viewBox="0 0 24 24">
-                    <path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
-                </svg>
-            </span> THEME
-        </div>
-    </nav>
-
-    <!-- BIOGRAPHY -->
-    <section class="mb-3">
-        <h2 class="section-header">WHO I AM</h2>
+    <!-- ========================================== -->
+    <!--            APP INFO VIEW (IN-PAGE)          -->
+    <!-- ========================================== -->
+    <div id="app-info-view">
+        <span class="app-back-btn" onclick="closeAppInfo()">[ BACK TO PORTFOLIO ]</span>
         
-        <div class="block-text">
-            I build web apps, prototype game concepts, and write fiction. I don't do "AI-generated" resumes. I do things that work, worlds that feel real, and code that's intentional.
+        <div class="app-icon" id="appIcon">0</div>
+        <div class="app-title" id="appTitle">APP NAME</div>
+        <div class="app-sub" id="appSub">WEB APP</div>
+
+        <div class="app-info-grid" id="appInfoGrid">
+            <div class="app-info-item">
+                <span class="app-info-label">ARCHITECTURE</span>
+                <span class="app-info-value" id="appArch">-</span>
+            </div>
+            <div class="app-info-item">
+                <span class="app-info-label">ANDROID VERSION</span>
+                <span class="app-info-value" id="appAndroid">-</span>
+            </div>
+            <div class="app-info-item">
+                <span class="app-info-label">SIZE</span>
+                <span class="app-info-value" id="appSize">-</span>
+            </div>
+            <div class="app-info-item">
+                <span class="app-info-label">BUILT WITH</span>
+                <span class="app-info-value" id="appBuiltWith">-</span>
+            </div>
         </div>
+
+        <div class="app-desc" id="appDesc">DESCRIPTION</div>
         
-        <div class="block-text text-muted">
-            I'm not a senior developer. I'm not pretending to be. I'm a beginner who actually builds things—bookshelves, games, libraries, stories, and design docs. That puts me ahead of most people stuck on tutorials.
-        </div>
-    </section>
-
-    <!-- PROJECTS -->
-    <section id="projects" class="mb-3">
-        <h2 class="section-header">WHAT I BUILD</h2>
-        
-        <div class="project-row">
-            <div class="project-clickable" onclick="openModal('BOOKSHELF', 'An offline PWA library manager that lets you store books, track reading status, and view them organized on a 3D wooden shelf interface. Built as a fully functional offline-capable web app.', 'apk', 'sngpb19mkg508ml')">
-                <div class="project-title">▮ BOOKSHELF</div>
-                <div class="text-xs text-muted project-meta">WEB APP</div>
-            </div>
-            <div class="text-xs text-muted">An offline PWA library manager. Store books, track reading status, and view them on a 3D wooden shelf.</div>
+        <div class="app-how" id="appHow">
+            <span class="app-how-label">HOW IT WORKS</span>
+            <span id="appHowText">-</span>
         </div>
 
-        <div class="project-row">
-            <div class="project-clickable" onclick="openModal('PRIMARY', 'A color memory game where you must memorize a target color and accurately recreate it using RGB sliders. Your score is calculated based on how precise your color matching is.', 'apk', 'q36xnwrc36zjbwn')">
-                <div class="project-title">▮ PRIMARY</div>
-                <div class="text-xs text-muted project-meta">WEB APP</div>
-            </div>
-            <div class="text-xs text-muted">A color memory game. Memorize a color, recreate it using RGB sliders, and score based on accuracy.</div>
-        </div>
+        <div class="app-tech" id="appTech">TECH STACK: -</div>
 
-        <div class="project-row">
-            <div class="project-clickable" onclick="openModal('STUMBLE', 'A web randomizer tool that sends you to hidden, weird, and interesting corners of the internet with a single tap. Discover obscure sites and unexpected content across the web.', 'web', 'https://stumble-io.netlify.app')">
-                <div class="project-title">▮ STUMBLE</div>
-                <div class="text-xs text-muted project-meta">WEB APP</div>
-            </div>
-            <div class="text-xs text-muted">A web randomizer that sends you to hidden, weird, and interesting corners of the internet.</div>
-        </div>
+        <button class="app-download-btn" id="appDownloadBtn">[ DOWNLOAD APK ]</button>
+    </div>
 
-        <div class="project-row">
-            <div class="project-clickable" onclick="openModal('THE LOOP', 'A 3D atmospheric platformer about a child who breaks free from an oppressive school system to discover the beauty of nature. Explore a vibrant forest, bond with wildlife through rhythm-based petting and healing mechanics, and face the consequences of defying conformity. The game is inspired by Little Nightmares and Inside, offering a 2-4 hour narrative-driven adventure.', 'gdd', '1NRxaWkRofYcpiQIXNQx3rSz6AwUielph')">
-                <div class="project-title">▮ THE LOOP</div>
-                <div class="text-xs text-muted project-meta">GAME CONCEPT</div>
-            </div>
-            <div class="text-xs text-muted">A narrative-driven 3D platformer about breaking free from conformity and facing the consequences of freedom.</div>
-        </div>
-
-        <div class="project-row">
-            <div class="project-clickable" onclick="openModal('CONCRETE SHIFT', 'A first-person rhythm-based survival game where a construction worker becomes trapped inside a vertical concrete pipe filled with wet cement. He must carefully control his movement to avoid sinking deeper or letting the cement harden around him. Manage risk, time your actions to visual cues, and decide whether to climb out or reach for a phone to call for help.', 'gdd', '1no5a8Jb-T1rSOrofxKcoJ6NNpbEFIId6')">
-                <div class="project-title">▮ CONCRETE SHIFT</div>
-                <div class="text-xs text-muted project-meta">GAME CONCEPT</div>
-            </div>
-            <div class="text-xs text-muted">A first-person rhythm survival game about a construction worker trapped in a concrete pipe filling with wet cement.</div>
-        </div>
-
-        <div class="project-row">
-            <div class="project-clickable" onclick="openModal('ESCAPE THE SALE', 'A first-person 3D maze runner where a husband trapped inside a massive furniture store during a massive sale must navigate complex showrooms and storage aisles to escape. He must run before his wife accumulates an overwhelming bill, dodging NPCs, finding exits, and managing score by keeping the final bill as low as possible.', 'gdd', '1hEBGfhJZft8erwAdDGGZtxo3Qs2-uIFa')">
-                <div class="project-title">▮ ESCAPE THE SALE</div>
-                <div class="text-xs text-muted project-meta">GAME CONCEPT</div>
-            </div>
-            <div class="text-xs text-muted">A first-person maze runner where a husband must escape a furniture store before his wife's shopping bill becomes overwhelming.</div>
-        </div>
-
-        <div class="project-row">
-            <div class="project-clickable" onclick="openModal('ANIMAL RIDER', 'An arcade racing game set in a world where fuel prices have become too high for vehicles. The player returns to the countryside and begins traveling using rideable animals. High-speed drifting builds energy, unlocking a temporary Super Sonic mode that allows you to destroy obstacles and push your animal to extreme speeds.', 'gdd', '1oV1CDefZn5pXu8UtplgRDatCfoCBvcKj')">
-                <div class="project-title">▮ ANIMAL RIDER</div>
-                <div class="text-xs text-muted project-meta">GAME CONCEPT</div>
-            </div>
-            <div class="text-xs text-muted">An arcade racing game about high-speed riding on animals. Drifting builds energy to unlock a temporary overpower state.</div>
-        </div>
-
-        <div class="project-row" style="border-bottom: none;">
-            <div class="project-clickable" onclick="openModal('LUDO ROGUELIKE', 'Classic Ludo is fused with a rogue-like card system in this demo. Every turn you roll the dice, draw a card, and strategize with 6 unique card types like Shotgun, Sniper, Shield, Swap, Sprint, and Win Steak. It supports 2-4 players in local hot-seat mode or vs AI.', 'gdd', '18PtNKbq7WeXcZjU2oLqRSorN8yKN41hG')">
-                <div class="project-title">▮ LUDO ROGUELIKE</div>
-                <div class="text-xs text-muted project-meta">GAME CONCEPT</div>
-            </div>
-            <div class="text-xs text-muted">A classic Ludo board game fused with a card system that breaks the rules every turn.</div>
-        </div>
-    </section>
-
-    <!-- WRITINGS -->
-    <section class="mb-3">
-        <h2 class="section-header">WRITINGS</h2>
-        
-        <div class="project-row">
-            <div class="project-title">▮ TAROT SHORT STORIES</div>
-            <div class="text-xs text-muted">A series of philosophical fables based on the Major Arcana. Titles include The Fool, The Lover, The Devil, and The High Priestess.</div>
-        </div>
-
-        <div class="project-row" style="border-bottom: none;">
-            <div class="project-title">▮ SCP-STYLE REPORTS</div>
-            <div class="text-xs text-muted">Classified, clinical horror files written in the style of secure containment documents. Titles include The Immortal Dead, The Divided Subject, Friend and Foe, and The Crawling Family.</div>
-        </div>
-    </section>
-
-    <!-- TOOLBOX & HISTORY -->
-    <section class="mb-3">
-        <h2 class="section-header">TOOLBOX & WORK HISTORY</h2>
-        
-        <div class="flex flex-col gap-1" style="margin-bottom: 20px;">
-            <div class="text-muted text-xs">[ / ] FRONT-END :</div>
-            <div class="indent-text text-sm">HTML · CSS · JAVASCRIPT</div>
-            <div class="indent-text text-sm">GIT · PWA · LOCALSTORAGE · OFFLINE APPS</div>
-            
-            <div class="text-muted text-xs mt-1">[ / ] DESIGN :</div>
-            <div class="indent-text text-sm">GAME DESIGN DOCUMENTS · NARRATIVE WRITING · WORLDBUILDING</div>
-        </div>
-
-        <div class="flex flex-col gap-1">
-            <div class="text-muted text-xs">[ / ] HISTORY :</div>
-            <div class="flex justify-between text-sm" style="border-bottom: 1px solid var(--border-light); padding: 8px 0;">
-                <span>2024 – GAME DESIGNER</span>
-                <span class="text-muted text-xs">THE LOOP (GDD)</span>
-            </div>
-            <div class="flex justify-between text-sm" style="border-bottom: 1px solid var(--border-light); padding: 8px 0;">
-                <span>2023 – WEB DEVELOPER</span>
-                <span class="text-muted text-xs">BOOKSHELF / PRIMARY</span>
-            </div>
-            <div class="flex justify-between text-sm" style="padding: 8px 0;">
-                <span>2023 – NARRATIVE WRITER</span>
-                <span class="text-muted text-xs">TAROT / SCP</span>
-            </div>
-        </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="contact" class="mb-2">
-        <h2 class="section-header">CONTACT</h2>
-        <div class="flex flex-col gap-1 text-sm">
-            <div class="flex justify-between" onclick="copyEmail()">
-                <span>EMAIL</span>
-                <span class="text-muted" style="cursor: pointer;">TrineryA2@gmail.com</span>
-            </div>
-            <div class="flex justify-between">
-                <span>GITHUB</span>
-                <a href="https://github.com/TrineryA2" target="_blank" class="text-muted" style="cursor: pointer;">github.com/TrineryA2</a>
-            </div>
-            <div class="flex justify-between">
-                <span>ITCH.IO</span>
-                <a href="https://trinerya2.itch.io" target="_blank" class="text-muted" style="cursor: pointer;">trinerya2.itch.io</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer class="footer-grid">
-        <div>TA2<br><span class="text-xs">© 2026</span></div>
-        <div class="text-right text-xs">TrineryA2@gmail.com</div>
-        <div class="text-xs">github.com/TrineryA2</div>
-        <div class="text-right text-xs">trinerya2.itch.io</div>
-    </footer>
-
-    <!-- SCRIPTS -->
+    <!-- ========================================== -->
+    <!--                 SCRIPTS                     -->
+    <!-- ========================================== -->
     <script>
         /* --- THEME TOGGLE --- */
         const sunPath = "M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41";
@@ -504,45 +636,105 @@
             });
         }
 
-        /* --- MODAL / POPUP LOGIC --- */
-        function openModal(title, description, type, fileId) {
-            document.getElementById('modalTitle').innerText = "▮ " + title;
-            document.getElementById('modalDesc').innerText = description;
+        /* --- BULLETPROOF SCROLL LOGIC (SLIDE METHOD) --- */
+        let savedScroll = 0;
+
+        function openAppInfo(title, desc, iconPath, tech, arch, androidVer, size, fileId, howItWorks) {
+            savedScroll = window.scrollY;
+
+            document.getElementById('main-portfolio').classList.add('hidden');
+            document.getElementById('app-info-view').classList.add('open');
+            window.scrollTo(0, 0);
+
+            document.getElementById('appTitle').innerText = "▮ " + title;
+            document.getElementById('appDesc').innerText = desc;
+            document.getElementById('appHowText').innerText = howItWorks || "The user can interact with the app's core features directly.";
             
-            const linkContainer = document.getElementById('modalLinks');
-            linkContainer.innerHTML = ''; 
+            // Handle APK / Web App Specs
+            if (tech) {
+                document.getElementById('appInfoGrid').style.display = 'grid';
+                document.getElementById('appTech').innerText = "TECH STACK: " + tech;
+                document.getElementById('appBuiltWith').innerText = tech;
+                document.getElementById('appSize').innerText = size || 'N/A';
+                document.getElementById('appArch').parentElement.style.display = 'block';
+                document.getElementById('appAndroid').parentElement.style.display = 'block';
+                
+                if (arch) {
+                    document.getElementById('appArch').innerText = arch;
+                } else {
+                    document.getElementById('appArch').innerText = 'N/A';
+                }
 
-            if (type === 'apk') {
-                // MediaFire APK Download
-                const apkLink = `https://www.mediafire.com/file/${fileId}/file`;
-                linkContainer.innerHTML = `
-                    <a href="${apkLink}" target="_blank" class="modal-link">[ DOWNLOAD APK ]</a>
-                `;
-            } else if (type === 'web') {
-                // Direct Website Link (Stumble)
-                linkContainer.innerHTML = `
-                    <a href="${fileId}" target="_blank" class="modal-link">[ VISIT WEBSITE ]</a>
-                `;
-            } else if (type === 'gdd' && fileId) {
-                // Google Drive GDD View
-                const viewLink = `https://drive.google.com/file/d/${fileId}/view`;
-                linkContainer.innerHTML = `
-                    <a href="${viewLink}" target="_blank" class="modal-link">[ VIEW GDD ]</a>
-                `;
+                if (androidVer) {
+                    document.getElementById('appAndroid').innerText = androidVer;
+                } else {
+                    document.getElementById('appAndroid').innerText = 'N/A';
+                }
+            } else {
+                // GDDs: Hide the ENTIRE grid completely
+                document.getElementById('appInfoGrid').style.display = 'none';
+                document.getElementById('appTech').innerText = "";
             }
 
-            document.getElementById('projectModal').classList.add('open');
-        }
+            // Set Icon
+            const iconContainer = document.getElementById('appIcon');
+            if (iconPath) {
+                iconContainer.style.display = 'flex';
+                iconContainer.innerHTML = `<img src="${iconPath}" alt="${title} icon" onerror="this.style.display='none'; this.parentElement.innerText='${title.charAt(0)}';">`;
+            } else {
+                iconContainer.style.display = 'none';
+            }
 
-        function closeModal() {
-            document.getElementById('projectModal').classList.remove('open');
-        }
-
-        function closeModalOutside(event) {
-            if (event.target === document.getElementById('projectModal')) {
-                closeModal();
+            // Handle Button Actions
+            const downloadBtn = document.getElementById('appDownloadBtn');
+            if (fileId && fileId !== '') {
+                downloadBtn.style.display = 'block';
+                
+                if (fileId.includes('drive.google.com')) {
+                    downloadBtn.innerText = "[ VIEW GDD ]";
+                    downloadBtn.onclick = function(e) {
+                        e.preventDefault();
+                        window.open(fileId, '_blank');
+                    };
+                } else if (fileId.startsWith('http')) {
+                    downloadBtn.innerText = "[ VISIT WEBSITE ]";
+                    downloadBtn.onclick = function(e) {
+                        e.preventDefault();
+                        window.open(fileId, '_blank');
+                    };
+                } else {
+                    // ANDROID DOWNLOAD FIX (No MediaFire tab)
+                    downloadBtn.innerText = "[ DOWNLOAD APK ]";
+                    downloadBtn.onclick = function(e) {
+                        e.preventDefault();
+                        // Trigger Android Download Manager directly
+                        window.location.href = `https://www.mediafire.com/file/${fileId}/file?download=1`;
+                    };
+                }
+            } else {
+                downloadBtn.style.display = 'none';
             }
         }
+
+        function closeAppInfo() {
+            document.getElementById('app-info-view').classList.remove('open');
+            document.getElementById('main-portfolio').classList.remove('hidden');
+            
+            requestAnimationFrame(() => {
+                window.scrollTo(0, savedScroll);
+            });
+        }
+
+        /* --- ANDROID BACK BUTTON FIX --- */
+        window.addEventListener('popstate', function(event) {
+            const appView = document.getElementById('app-info-view');
+            if (appView.classList.contains('open')) {
+                closeAppInfo();
+                history.pushState(null, null, window.location.href);
+            }
+        });
+
+        history.pushState(null, null, window.location.href);
     </script>
 </body>
 </html>
